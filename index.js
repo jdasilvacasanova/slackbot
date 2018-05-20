@@ -87,6 +87,16 @@ controller.on('bot_channel_join', function (bot, message) {
 
 controller.hears(['hello', 'hi', 'greetings'], ['direct_mention', 'mention', 'direct_message'], function(bot,message) {
      bot.reply(message, 'Hello!, I love Leandra');
+     console.log('hi');
+ });
+
+controller.on('direct_mention, mention, direct_message', function(bot,message) {
+    bot.api.reactions.add({
+        timestamp: message.ts,
+        channel: message.channel,
+        name: 'robot_face',
+    })
+    console.log('bot, message');
  });
 
 /**
