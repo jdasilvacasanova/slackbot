@@ -93,15 +93,10 @@ controller.hears(['hello', 'hi', 'greetings'], ['direct_mention', 'mention', 'di
  * AN example of what could be:
  * Any un-handled direct mention gets a reaction and a pat response!
  */
-//controller.on('direct_message,mention,direct_mention', function (bot, message) {
-//    bot.api.reactions.add({
-//        timestamp: message.ts,
-//        channel: message.channel,
-//        name: 'robot_face',
-//    }, function (err) {
-//        if (err) {
-//            console.log(err)
-//        }
-//        bot.reply(message, 'I heard you loud and clear boss.');
-//    });
-//});
+controller.hears(['Fitness time'],['direct_mention', 'mention', 'direct_message'] function (bot, message) {
+	bot.reply(message, 'EVERYBODY EXERCISE! Also, leave a smile when you are done');
+	controller.storage.users.save({id:"LastMessage", ts:message.ts}, function(err, id) {
+            bot.say({ text:'Message saved! Timestamp is ' + message.ts, channel:message.channel});
+	});
+});
+
