@@ -1,7 +1,7 @@
 {
-  "name": "easy-peasy-bot",
+  "name": "fitnessReminderBot",
   "version": "1.0.0",
-  "description": "The awesomest bot evar.",
+  "description": "The bot to keep you fit.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -9,18 +9,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DEGoodmanWilson/easy-peasy-bot-app.git"
+    "url": "git+https://github.com/jdasilvacasanova/slackbot.git"
   },
   "keywords": [
     "slack",
     "bot"
   ],
-  "author": "D.E. Goodman-Wilson",
+  "author": "Leandra Silver",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/DEGoodmanWilson/easy-peasy-bot-app/issues"
+    "url": "https://github.com/jdasilvacasanova/slackbot/issues"
   },
-  "homepage": "https://github.com/DEGoodmanWilson/easy-peasy-bot-app#readme",
+  "homepage": "https://github.com/jdasilvacasanova/slackbot#readme",
   "engines": {
     "node": "5.1.1"
   },
