@@ -1,5 +1,10 @@
 # easy-peasy-bot
 
+To start fitness app, please run
+```TOKEN=xoxb-your-token-here npm start```
+
+Find the tooken pinned to the testing slack channel
+
 ## The story of a (Slack)bot
 
 A (not so) long time ago, a team called Tiny Speck built an app to communicate with each other as they worked.
