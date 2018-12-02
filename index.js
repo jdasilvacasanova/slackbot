@@ -2,7 +2,6 @@
  * A Bot for Slack!
  */
 
-
 /**
  * Define a function for initiating a conversation on installation
  * With custom integrations, we don't have a way to find out who installed us, so we can't message them :(
@@ -82,31 +81,83 @@ controller.on('rtm_close', function (bot) {
 // BEGIN EDITING HERE!
 
 controller.on('bot_channel_join', function (bot, message) {
-    bot.reply(message, "I'm here!")
+    bot.reply(message, "I'm here! Let's get fit.")
 });
 
 controller.hears(['hello', 'hi', 'greetings'], ['direct_mention', 'mention', 'direct_message'], function(bot,message) {
-     bot.reply(message, 'Hello!, I love Leandra');
-     console.log('hi');
- });
+    bot.reply(message, 'Hello, welcome to the fitness bot! Type ``` info @fitnessbot ``` for more information.');
+});
+
+controller.hears(['Should I have pasta'], ['direct_mention', 'mention', 'direct_message'], function(bot,message) {
+    bot.reply(message, 'No, because we are getting fit. Have a gin and soda instead?');
+});
+
+controller.hears(['info'], ['direct_mention', 'mention', 'direct_message'], function(bot,message) {
+    bot.reply(message, 'More information goes here');
+});
 
 controller.on('direct_mention, mention, direct_message', function(bot,message) {
     bot.api.reactions.add({
         timestamp: message.ts,
         channel: message.channel,
-        name: 'robot_face',
-    })
-    console.log('bot, message');
+        name: 'heart',
+    });
  });
 
 /**
  * AN example of what could be:
  * Any un-handled direct mention gets a reaction and a pat response!
  */
-controller.hears(['Fitness time'],['direct_mention', 'mention', 'direct_message'] function (bot, message) {
-	bot.reply(message, 'EVERYBODY EXERCISE! Also, leave a smile when you are done');
-	controller.storage.users.save({id:"LastMessage", ts:message.ts}, function(err, id) {
-            bot.say({ text:'Message saved! Timestamp is ' + message.ts, channel:message.channel});
-	});
+controller.hears(['Fitness time' , 't'],['direct_mention', 'mention', 'direct_message'], function (bot, message) {
+    bot.say(
+        {
+          text: 'EVERYBODY EXERCISE! Also, leave any emote when you are done. We will track attendance here.',
+          channel: message.channel
+        }
+    );
+
+    setTimeout(function(){
+        bot.api.channels.history({channel: message.channel, count: 1}, function(err, response){
+            controller.storage.users.save({id:"LastMessage", ts:response.messages[0].ts})
+        });
+    },100);
+    
 });
 
+controller.on('reaction_added',function(bot, event) {
+    controller.storage.users.get("LastMessage",function(error,myData){
+        if (event.item.ts === myData.ts) {
+            storeUserData(event);
+        }
+    });
+});
+
+// need a reaction to get reactions then tally them in firebase based on user
+function storeUserData(event) {
+    var user = event.user;
+
+    // when user reacts give them +1
+    controller.storage.users.save({id:user, points: 1});
+    controller.storage.users.get(user, function(error, data){
+        console.log(data, error);
+    });
+
+    // if user already exists and reacted twice do nothing.. they got the point for the day
+    // if user doesn't already exist in firebase then add a plus one to score
+
+    // what happens when people remove emotes? make sure to recalc
+        //if only one 
+    // And remove point from firebase
+}
+
+// make function for configs in slack for when to show the tally
+// then clear score and start fresh?
+
+// slack.api("channels.history", {
+//     channel: channel,
+//     latest: ts,
+//     count: 1,
+//     inclusive: 1
+// }, function(err, response) {
+//     bot.say(response);
+// });
